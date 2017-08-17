@@ -249,6 +249,10 @@ class SaleOrderMapper(ImportMapper):
                float(record['total_paid_tax_excl']))
         return {'total_amount_tax': tax}
 
+    def finalize(self, map_record, values):
+        onchange = self.unit_for(SaleOrderOnChange)
+        return onchange.play(values, values['prestashop_order_line_ids'])
+
 
 @prestashop
 class SaleOrderImport(PrestashopImporter):
