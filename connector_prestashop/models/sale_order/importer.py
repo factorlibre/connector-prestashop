@@ -261,7 +261,7 @@ class SaleOrderImport(PrestashopImporter):
     def _create_payment(self, erp_id):
         if not erp_id.payment_method_id.journal_id:
             return
-        amount = float(self.prestashop_record.get('total_paid', '0'))
+        amount = float(self.prestashop_record.get('total_paid_real', '0'))
         if amount > 0:
             erp_id.automatic_payment(amount)
 
