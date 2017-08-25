@@ -58,6 +58,9 @@ class SaleImportRule(ConnectorUnit):
                                        'The import will be retried later.')
 
     def _get_paid_amount(self, record):
+        if float(record.get('total_paid_real', '0')) > 0:
+            return float(record.get('total_paid_real', '0'))
+
         payment_adapter = self.unit_for(
             GenericAdapter,
             '__not_exist_prestashop.payment'
