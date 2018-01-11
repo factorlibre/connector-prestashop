@@ -162,6 +162,10 @@ class GenericAdapter(PrestaShopCRUDAdapter):
     # _export_node_name_res = "manufacturer"
     _export_node_name_res = ''
 
+    def connect(self):
+        return PrestaShopWebServiceDict(self.prestashop.api_url,
+                                        self.prestashop.webservice_key)
+
     def search(self, filters=None):
         """ Search records according to some criterias
         and returns a list of ids

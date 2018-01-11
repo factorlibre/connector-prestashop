@@ -42,5 +42,5 @@ def export_sale_state(session, record_id):
         if new_state is None:
             continue
         env = get_environment(session, inherit_model, backend_id)
-        sale_exporter = env.unit_for(SaleStateExporter)
+        sale_exporter = env.get_connector_unit(SaleStateExporter)
         sale_exporter.run(sale.prestashop_id, new_state)

@@ -58,6 +58,9 @@ class SaleImportRule(ConnectorUnit):
                                        'The import will be retried later.')
 
     def _get_paid_amount(self, record):
+        if float(record.get('total_paid_real', '0')) > 0:
+            return float(record.get('total_paid_real', '0'))
+
         payment_adapter = self.unit_for(
             GenericAdapter,
             '__not_exist_prestashop.payment'
@@ -249,10 +252,21 @@ class SaleOrderMapper(ImportMapper):
                float(record['total_paid_tax_excl']))
         return {'total_amount_tax': tax}
 
+    def finalize(self, map_record, values):
+        onchange = self.unit_for(SaleOrderOnChange)
+        return onchange.play(values, values['prestashop_order_line_ids'])
+
 
 @prestashop
 class SaleOrderImport(PrestashopImporter):
     _model_name = ['prestashop.sale.order']
+
+    def _create_payment(self, erp_id):
+        if not erp_id.payment_method_id.journal_id:
+            return
+        amount = float(self.prestashop_record.get('total_paid_real', '0'))
+        if amount > 0:
+            erp_id.automatic_payment(amount)
 
     def _import_dependencies(self):
         record = self.prestashop_record
@@ -292,10 +306,11 @@ class SaleOrderImport(PrestashopImporter):
                 'order_id': erp_order.odoo_id.id,
                 'product_id':
                     erp_order.odoo_id.carrier_id.product_id.id,
-                'price_unit':  shipping_total,
+                'price_unit': shipping_total,
                 'is_delivery': True
             })
         erp_order.odoo_id.recompute()
+        self._create_payment(erp_order.odoo_id)
         return True
 
     def _check_refunds(self, id_customer, id_order):

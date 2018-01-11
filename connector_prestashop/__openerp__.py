@@ -18,6 +18,7 @@
         "purchase",
         "product_variant_supplierinfo",
         "product_variant_cost_price",
+        "sale_payment_method_automatic_workflow",
     ],
     "external_dependencies": {
         'python': [
