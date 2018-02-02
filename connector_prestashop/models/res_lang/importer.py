@@ -20,10 +20,10 @@ class LangImporter(DirectBinder):
 
     def _compare_function(self, ps_val, erp_val, ps_dict, erp_dict):
         if len(erp_val) >= 2 and len(ps_val) >= 2:
-                if len(ps_val) == 2:
-                    if erp_val[0:2].lower() == ps_val[0:2].lower():
-                        return True
-                elif len(ps_val) == 4:
-                    if ps_val.replace('-', '_').lower() == erp_val.lower():
-                        return True
+            if len(ps_val) == 2:
+                if erp_val[0:2].lower() == ps_val[0:2].lower():
+                    return True
+            elif len(ps_val) == 5:
+                if ps_val.replace('-', '_').lower() == erp_val.lower():
+                    return True
         return False

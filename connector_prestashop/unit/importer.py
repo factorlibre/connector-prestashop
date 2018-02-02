@@ -416,7 +416,7 @@ class TranslatableRecordImporter(PrestashopImporter):
                 'field2': value_it,
             }
         """
-        split_record = {}
+        split_record = {}      
         languages = self.find_each_language(record)
         if not languages:
             raise FailedJobError(
