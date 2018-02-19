@@ -92,7 +92,7 @@ class SaleImportRule(ConnectorUnit):
         session = self.session
         payment_method = record['payment']
         method = session.env['payment.method'].search(
-            [('name', '=', payment_method)])
+            [('name', '=', payment_method)], limit=1)
         if not method:
             raise FailedJobError(
                 "The configuration is missing for the Payment Method '%s'.\n\n"
