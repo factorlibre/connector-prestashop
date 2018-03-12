@@ -155,7 +155,7 @@ class SaleOrderAdapter(GenericAdapter):
 
     def update_sale_state(self, prestashop_id, datas):
         api = self.connect()
-        return api.add('order_histories', datas)
+        return api.add('order_histories?sendemail=1', datas)
 
     def search(self, filters=None):
         result = super(SaleOrderAdapter, self).search(filters=filters)
